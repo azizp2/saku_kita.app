@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:saku_kita_app/app/%20app.dart';
+import 'package:saku_kita_app/app/app.dart';
 
 void main() {
   testWidgets('Saku.Kita login page', (tester) async {

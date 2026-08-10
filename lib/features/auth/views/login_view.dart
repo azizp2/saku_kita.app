@@ -22,11 +22,16 @@ class LoginView extends GetView<LoginController> {
               children: [
                 const SizedBox(height: 30),
 
-                const AuthLogo(),
+                const AuthHeader(
+                  title: 'Selamat datang 👋',
+                  subTitle: "Silahkan login untuk melanjutkan.",
+                ),
 
                 const SizedBox(height: 28),
 
-                const AuthHeader(),
+                const AuthLogo(
+                  imagePath: 'assets/images/undraw_wallet_diag.png',
+                ),
 
                 const SizedBox(height: 40),
 

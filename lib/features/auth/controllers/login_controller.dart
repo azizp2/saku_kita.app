@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/routes/app_routes.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -10,6 +11,10 @@ class LoginController extends GetxController {
 
   void togglePassword() {
     obscurePassword.value = !obscurePassword.value;
+  }
+
+  void goToLogin() {
+    Get.toNamed(AppRoutes.login);
   }
 
   Future<void> login() async {
@@ -66,11 +71,11 @@ class LoginController extends GetxController {
   }
 
   void forgotPassword() {
-    // TODO
+    Get.toNamed(AppRoutes.register);
   }
 
   void register() {
-    // TODO
+    Get.toNamed(AppRoutes.register);
   }
 
   void loginWithGoogle() {

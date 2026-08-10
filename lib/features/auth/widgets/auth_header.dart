@@ -3,14 +3,23 @@ import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
 
 class AuthHeader extends StatelessWidget {
-  const AuthHeader({super.key});
+  final String title;
+  final String subTitle;
+  final String? description;
+
+  const AuthHeader({
+    super.key,
+    required this.title,
+    required this.subTitle,
+    this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         Text(
-          'Selamat datang 👋',
+          title,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 26,
@@ -22,10 +31,24 @@ class AuthHeader extends StatelessWidget {
         SizedBox(height: 8),
 
         Text(
-          'Masuk untuk melanjutkan ke Saku.Kita',
+          subTitle,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 14, color: AppColors.muted),
         ),
+
+        if (description != null) ...[
+          SizedBox(height: 8),
+
+          Text(
+            description!,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+              color: AppColors.muted,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
       ],
     );
   }
