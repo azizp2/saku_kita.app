@@ -5,7 +5,6 @@ import 'package:saku_kita_app/features/auth/widgets/register_form.dart';
 import '../../../app/theme/app_colors.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_logo.dart';
-import '../widgets/login_form.dart';
 import '../controllers/login_controller.dart';
 
 class RegisterView extends GetView<LoginController> {
@@ -38,7 +37,9 @@ class RegisterView extends GetView<LoginController> {
 
                 const SizedBox(height: 36),
 
-                _RegisterSection(),
+                _LoginSection(),
+
+                const SizedBox(height: 36),
               ],
             ),
           ),
@@ -48,7 +49,7 @@ class RegisterView extends GetView<LoginController> {
   }
 }
 
-class _RegisterSection extends StatelessWidget {
+class _LoginSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<LoginController>();
