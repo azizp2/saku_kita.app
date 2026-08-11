@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/routes/app_routes.dart';
+import 'package:saku_kita_app/features/auth/controllers/register_controller.dart';
+import 'package:saku_kita_app/features/auth/widgets/register_form.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_logo.dart';
-import '../widgets/login_form.dart';
-import '../controllers/login_controller.dart';
 
-class LoginView extends GetView<LoginController> {
-  const LoginView({super.key});
+class RegisterPage extends GetView<RegisterController> {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,23 +24,23 @@ class LoginView extends GetView<LoginController> {
                 const SizedBox(height: 30),
 
                 const AuthHeader(
-                  title: 'Selamat datang 👋',
-                  subTitle: "Silahkan login untuk melanjutkan.",
+                  title: 'Buat Akun Baru',
+                  subTitle: "Buat akun untuk memulai penggunaan saku.kita",
                 ),
 
                 const SizedBox(height: 28),
 
-                const AuthLogo(
-                  imagePath: 'assets/images/undraw_wallet_diag.png',
-                ),
+                const AuthLogo(imagePath: 'assets/images/undraw_add-user.png'),
 
                 const SizedBox(height: 40),
 
-                const LoginForm(),
+                const RegisterForm(),
 
                 const SizedBox(height: 36),
 
-                _RegisterSection(),
+                _LoginSection(),
+
+                const SizedBox(height: 36),
               ],
             ),
           ),
@@ -49,22 +50,22 @@ class LoginView extends GetView<LoginController> {
   }
 }
 
-class _RegisterSection extends StatelessWidget {
+class _LoginSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<LoginController>();
+    final controller = Get.find<RegisterController>();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text(
-          'Belum punya akun? ',
+          'Sudah punya akun? ',
           style: TextStyle(color: AppColors.muted, fontSize: 14),
         ),
         GestureDetector(
-          onTap: controller.register,
+          onTap: () => Get.toNamed(AppRoutes.login),
           child: const Text(
-            'Daftar',
+            'Login',
             style: TextStyle(
               color: AppColors.primary,
               fontSize: 14,

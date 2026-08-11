@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/routes/app_routes.dart';
 
-class LoginController extends GetxController {
+class RegisterController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -32,7 +33,11 @@ class LoginController extends GetxController {
     });
   }
 
-  Future<void> login() async {
+  void goToLogin() {
+    Get.toNamed(AppRoutes.login);
+  }
+
+  Future<void> register() async {
     // if (emailController.text.trim().isEmpty) {
     //   Get.snackbar(
     //     'Login',
@@ -86,6 +91,18 @@ class LoginController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void forgotPassword() {
+    Get.toNamed(AppRoutes.forgotPassword);
+  }
+
+  void loginWithGoogle() {
+    // TODO
+  }
+
+  void loginWithApple() {
+    // TODO
   }
 
   @override

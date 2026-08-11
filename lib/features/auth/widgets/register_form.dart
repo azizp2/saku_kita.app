@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/features/auth/controllers/register_controller.dart';
 
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_input.dart';
-import '../controllers/login_controller.dart';
 
-class RegisterForm extends GetView<LoginController> {
+class RegisterForm extends GetView<RegisterController> {
   const RegisterForm({super.key});
 
   @override
@@ -42,7 +42,7 @@ class RegisterForm extends GetView<LoginController> {
             prefixIcon: Icons.lock_outline_rounded,
             obscureText: controller.obscurePassword.value,
             textInputAction: TextInputAction.done,
-            onSubmitted: (_) => controller.login(),
+            onSubmitted: (_) => controller.register(),
             suffixIcon: IconButton(
               onPressed: controller.togglePassword,
               icon: Icon(
@@ -63,7 +63,7 @@ class RegisterForm extends GetView<LoginController> {
             prefixIcon: Icons.lock_outline_rounded,
             obscureText: controller.obscurePassword.value,
             textInputAction: TextInputAction.done,
-            onSubmitted: (_) => controller.login(),
+            onSubmitted: (_) => controller.register(),
             suffixIcon: IconButton(
               onPressed: controller.togglePassword,
               icon: Icon(
@@ -81,7 +81,7 @@ class RegisterForm extends GetView<LoginController> {
           () => AppButton(
             text: 'Masuk',
             loading: controller.isLoading.value,
-            onPressed: controller.login,
+            onPressed: controller.register,
           ),
         ),
       ],

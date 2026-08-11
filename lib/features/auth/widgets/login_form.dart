@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/routes/app_routes.dart';
+import 'package:saku_kita_app/features/auth/controllers/login_controller.dart';
 
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_input.dart';
 import '../../../core/widgets/social_button.dart';
-import '../controllers/login_controller.dart';
 
 class LoginForm extends GetView<LoginController> {
   const LoginForm({super.key});
@@ -13,13 +14,16 @@ class LoginForm extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppInput(
-          label: 'Email atau nomor HP',
-          hintText: 'Masukkan email atau nomor HP',
-          controller: controller.emailController,
-          prefixIcon: Icons.person_outline_rounded,
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
+        Obx(
+          () => AppInput(
+            label: 'Email atau nomor HP',
+            hintText: 'Masukkan email atau nomor HP',
+            controller: controller.emailController,
+            prefixIcon: Icons.person_outline_rounded,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            errorText: controller.emailError.value,
+          ),
         ),
 
         const SizedBox(height: 22),
@@ -41,6 +45,7 @@ class LoginForm extends GetView<LoginController> {
                     : Icons.visibility_outlined,
               ),
             ),
+            errorText: controller.passwordError.value,
           ),
         ),
 
@@ -49,7 +54,7 @@ class LoginForm extends GetView<LoginController> {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: controller.forgotPassword,
+            onPressed: () => Get.toNamed(AppRoutes.forgotPassword),
             child: const Text('Lupa kata sandi?'),
           ),
         ),
@@ -76,7 +81,7 @@ class LoginForm extends GetView<LoginController> {
               child: SocialButton(
                 icon: Icons.g_mobiledata_rounded,
                 label: 'Google',
-                onPressed: controller.loginWithGoogle,
+                onPressed: () {},
               ),
             ),
             const SizedBox(width: 12),
@@ -84,7 +89,7 @@ class LoginForm extends GetView<LoginController> {
               child: SocialButton(
                 icon: Icons.apple,
                 label: 'Apple',
-                onPressed: controller.loginWithApple,
+                onPressed: () {},
               ),
             ),
           ],

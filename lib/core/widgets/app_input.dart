@@ -17,6 +17,7 @@ class AppInput extends StatelessWidget {
   final TextInputAction? textInputAction;
   final VoidCallback? onTap;
   final ValueChanged<String>? onSubmitted;
+  final String? errorText;
 
   const AppInput({
     super.key,
@@ -30,6 +31,7 @@ class AppInput extends StatelessWidget {
     this.textInputAction,
     this.onTap,
     this.onSubmitted,
+    this.errorText,
   });
 
   @override
@@ -62,6 +64,8 @@ class AppInput extends StatelessWidget {
                 ? null
                 : Icon(prefixIcon, color: AppColors.muted, size: 21),
             suffixIcon: suffixIcon,
+            errorText: errorText,
+
             filled: true,
             fillColor: Colors.white,
             contentPadding: const EdgeInsets.symmetric(
@@ -71,6 +75,10 @@ class AppInput extends StatelessWidget {
             border: _border(),
             enabledBorder: _border(),
             focusedBorder: _border(color: AppColors.primary, width: 1.5),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
           ),
         ),
       ],
