@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:saku_kita_app/features/auth/bindings/auth_session_binding.dart';
 import 'package:saku_kita_app/features/auth/bindings/register_binding.dart';
 import 'package:saku_kita_app/features/auth/pages/forgot_password_page.dart';
+import 'package:saku_kita_app/features/auth/pages/splash_page.dart';
+import 'package:saku_kita_app/features/home/page/HomePage.dart';
 
 import '../../features/auth/bindings/login_binding.dart';
 import '../../features/auth/pages/login_page.dart';
@@ -26,6 +29,14 @@ class AppPages {
       page: () => const ForgotPasswordView(),
       binding: LoginBinding(),
     ),
+
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => const SplashPage(),
+      binding: AuthSessionBinding(),
+    ),
+
+    GetPage(name: AppRoutes.home, page: () => Homepage()),
 
     // GetPage(
     //   name: AppRoutes.forgotPassword,

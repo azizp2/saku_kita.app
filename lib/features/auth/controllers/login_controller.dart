@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/routes/app_routes.dart';
+import 'package:saku_kita_app/core/storage/secure_storage.dart';
+import 'package:saku_kita_app/features/auth/repositories/auth_repository.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
@@ -10,6 +13,11 @@ class LoginController extends GetxController {
 
   final emailError = RxnString();
   final passwordError = RxnString();
+
+  final AuthRepository authRepository;
+  final SecureStorage secureStorage;
+
+  LoginController({required this.authRepository, required this.secureStorage});
 
   void togglePassword() {
     obscurePassword.value = !obscurePassword.value;
@@ -33,56 +41,44 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
-    // if (emailController.text.trim().isEmpty) {
-    //   Get.snackbar(
-    //     'Login',
-    //     'Email atau nomor HP wajib diisi',
-    //     snackPosition: SnackPosition.BOTTOM,
-    //   );
-
-    //   return;
-    // }
-
-    // if (passwordController.text.isEmpty) {
-    //   Get.snackbar(
-    //     'Login',
-    //     'Kata sandi wajib diisi',
-    //     snackPosition: SnackPosition.BOTTOM,
-    //   );
-
-    //   return;
-    // }
-
     try {
       if (!validatedLogin()) {
         return;
       }
       isLoading.value = true;
 
-      await Future.delayed(const Duration(seconds: 5));
+      final result = await authRepository.login(
+        email: emailController.text.trim(),
+        password: passwordController.text,
+      );
 
-      if (emailController.text == "admin@gmail.com" &&
-          passwordController.text == "12345678") {
-        Get.snackbar(
-          "Succcess",
-          "Login successfully.",
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return;
+      if (!result.success || result.data == null) {
+        final message = result.errors.isNotEmpty
+            ? result.errors.first.message
+            : "login gagal";
+
+        throw Exception(message);
       }
 
-      // TODO:
-      // AuthRepository
-      // ↓
-      // Dio
-      // ↓
-      // SakuKita.Api
+      final loginData = result.data;
 
-      await Future.delayed(const Duration(seconds: 1));
+      await secureStorage.saveTokens(
+        accessToken: loginData!.accessToken.accessToken,
+        refreshToken: loginData.accessToken.refreshToken,
+        expiresIn: loginData.accessToken.expiresIn,
+      );
 
       Get.snackbar(
         'Login',
         'Credentials failed.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
+      Get.offAllNamed(AppRoutes.forgotPassword);
+    } catch (e) {
+      Get.snackbar(
+        'Login gagal',
+        e.toString().replaceFirst('Exception: ', ''),
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
