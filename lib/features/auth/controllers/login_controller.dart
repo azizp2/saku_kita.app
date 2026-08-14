@@ -59,8 +59,10 @@ class LoginController extends GetxController {
       }
       isLoading.value = true;
 
-      if (emailController.text == "admin" &&
-          passwordController.text == "admin") {
+      await Future.delayed(const Duration(seconds: 5));
+
+      if (emailController.text == "admin@gmail.com" &&
+          passwordController.text == "12345678") {
         Get.snackbar(
           "Succcess",
           "Login successfully.",

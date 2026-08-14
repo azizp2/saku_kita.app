@@ -12,24 +12,29 @@ class RegisterForm extends GetView<RegisterController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppInput(
-          label: 'Name Lengkap',
-          hintText: 'Masukkan nama lengkap',
-          controller: controller.emailController,
-          prefixIcon: Icons.person_outline_rounded,
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
+        Obx(
+          () => AppInput(
+            label: 'Name Lengkap',
+            hintText: 'Masukkan nama lengkap',
+            controller: controller.nameController,
+            prefixIcon: Icons.person_outline_rounded,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            errorText: controller.nameError.value,
+          ),
         ),
 
         const SizedBox(height: 16),
-
-        AppInput(
-          label: 'Email',
-          hintText: 'Masukkan email',
-          controller: controller.emailController,
-          prefixIcon: Icons.person_outline_rounded,
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
+        Obx(
+          () => AppInput(
+            label: 'Email',
+            hintText: 'Masukkan email',
+            controller: controller.emailController,
+            prefixIcon: Icons.email_outlined,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            errorText: controller.emailError.value,
+          ),
         ),
 
         const SizedBox(height: 16),
@@ -43,6 +48,7 @@ class RegisterForm extends GetView<RegisterController> {
             obscureText: controller.obscurePassword.value,
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => controller.register(),
+            errorText: controller.passwordError.value,
             suffixIcon: IconButton(
               onPressed: controller.togglePassword,
               icon: Icon(
@@ -59,11 +65,12 @@ class RegisterForm extends GetView<RegisterController> {
           () => AppInput(
             label: 'Konfirmasi Kata sandi',
             hintText: 'Masukkan ulang kata sandi',
-            controller: controller.passwordController,
+            controller: controller.confirmPasswordController,
             prefixIcon: Icons.lock_outline_rounded,
             obscureText: controller.obscurePassword.value,
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => controller.register(),
+            errorText: controller.confirmPasswordError.value,
             suffixIcon: IconButton(
               onPressed: controller.togglePassword,
               icon: Icon(
@@ -79,7 +86,7 @@ class RegisterForm extends GetView<RegisterController> {
 
         Obx(
           () => AppButton(
-            text: 'Masuk',
+            text: 'Daftar',
             loading: controller.isLoading.value,
             onPressed: controller.register,
           ),

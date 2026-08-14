@@ -1,0 +1,10 @@
+Your FreeVPS.info Details
+---------------------------
+Username: aziz12
+Password: Mikrotik12@
+IPv4: 157.90.58.235
+IPv6: f50c:5265:bc17:efa8:ab71:e472:ae8d:c99e
+Location: USA
+OS: Ubuntu
+---------------------------
+Thank you for using our service!

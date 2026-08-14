@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:saku_kita_app/app/routes/app_routes.dart';
 
 class RegisterController extends GetxController {
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   final obscurePassword = true.obs;
   final isLoading = false.obs;
 
+  final nameError = RxnString();
   final emailError = RxnString();
   final passwordError = RxnString();
+  final confirmPasswordError = RxnString();
 
   void togglePassword() {
     obscurePassword.value = !obscurePassword.value;
@@ -19,6 +22,12 @@ class RegisterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    nameController.addListener(() {
+      if (nameError.value != null) {
+        nameError.value = null;
+      }
+    });
 
     emailController.addListener(() {
       if (emailError.value != null) {
@@ -31,35 +40,17 @@ class RegisterController extends GetxController {
         passwordError.value = null;
       }
     });
-  }
 
-  void goToLogin() {
-    Get.toNamed(AppRoutes.login);
+    confirmPasswordController.addListener(() {
+      if (confirmPasswordError.value != null) {
+        confirmPasswordError.value = null;
+      }
+    });
   }
 
   Future<void> register() async {
-    // if (emailController.text.trim().isEmpty) {
-    //   Get.snackbar(
-    //     'Login',
-    //     'Email atau nomor HP wajib diisi',
-    //     snackPosition: SnackPosition.BOTTOM,
-    //   );
-
-    //   return;
-    // }
-
-    // if (passwordController.text.isEmpty) {
-    //   Get.snackbar(
-    //     'Login',
-    //     'Kata sandi wajib diisi',
-    //     snackPosition: SnackPosition.BOTTOM,
-    //   );
-
-    //   return;
-    // }
-
     try {
-      if (!validatedLogin()) {
+      if (!validatedRegister()) {
         return;
       }
       isLoading.value = true;
@@ -93,28 +84,26 @@ class RegisterController extends GetxController {
     }
   }
 
-  void forgotPassword() {
-    Get.toNamed(AppRoutes.forgotPassword);
-  }
-
-  void loginWithGoogle() {
-    // TODO
-  }
-
-  void loginWithApple() {
-    // TODO
-  }
-
   @override
   void onClose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
 
     super.onClose();
   }
 
-  bool validatedLogin() {
+  bool validatedRegister() {
     bool isValid = true;
+
+    // Name
+    if (nameController.text.trim().isEmpty) {
+      nameError.value = 'Fullname wajib diisi';
+      isValid = false;
+    } else {
+      nameError.value = null;
+    }
 
     // Email
     if (emailController.text.trim().isEmpty) {
@@ -136,6 +125,16 @@ class RegisterController extends GetxController {
       isValid = false;
     } else {
       passwordError.value = null;
+    }
+
+    if (confirmPasswordController.text.isEmpty) {
+      confirmPasswordError.value = 'Konfirmasi kata sandi wajib diisi';
+      isValid = false;
+    } else if (confirmPasswordController.text.trim() !=
+        passwordController.text.trim()) {
+      confirmPasswordError.value =
+          'Konfirmasi password tidak match dengna password';
+      isValid = false;
     }
 
     return isValid;

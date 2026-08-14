@@ -53,7 +53,7 @@ class RegisterPage extends GetView<RegisterController> {
 class _LoginSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<RegisterController>();
+    Get.find<RegisterController>();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
