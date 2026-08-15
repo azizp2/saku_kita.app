@@ -1,24 +1,15 @@
-import 'package:saku_kita_app/core/models/base_response.dart';
-import 'package:saku_kita_app/core/network/api_client.dart';
-import 'package:saku_kita_app/core/network/api_endpoints.dart';
+import 'package:saku_kita_app/features/auth/data_sources/auth_remote_data_source.dart';
 import 'package:saku_kita_app/features/auth/models/login_response.dart';
 
 class AuthRepository {
-  final ApiClient apiClient;
+  final AuthRemoteDataSource remoteDataSource;
 
-  AuthRepository({required this.apiClient});
+  AuthRepository({required this.remoteDataSource});
 
-  Future<BaseResponse<LoginResponse>> login({
+  Future<LoginResponse> login({
     required String email,
     required String password,
   }) {
-    return apiClient.post<LoginResponse>(
-      endpoint: ApiEndpoints.login,
-      requiresAuth: false,
-      body: {'userName': email, 'password': password},
-      fromJson: (data) {
-        return LoginResponse.fromJson(data);
-      },
-    );
+    return remoteDataSource.login(email: email, password: password);
   }
 }

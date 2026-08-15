@@ -1,89 +1,231 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:saku_kita_app/core/models/base_response.dart';
+import 'package:saku_kita_app/core/network/interceptor/auth_interceptor.dart';
+import 'package:saku_kita_app/core/storage/secure_storage.dart';
 
-import 'package:http/http.dart' as http;
-
-import '../models/base_response.dart';
-import '../storage/secure_storage.dart';
+import '../exceptions/api_exception.dart';
+import '../models/api_error.dart';
 
 class ApiClient {
-  final String baseUrl;
-  final SecureStorage secureStorage;
+  final Dio _dio;
 
-  ApiClient({required this.baseUrl, required this.secureStorage});
+  ApiClient({required String baseUrl, required SecureStorage secureStorage})
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: baseUrl,
+          connectTimeout: const Duration(seconds: 10),
+          sendTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+        ),
+      ) {
+    _dio.interceptors.add(AuthInterceptor(secureStorage: secureStorage));
+  }
 
-  Future<BaseResponse<T>> post<T>({
-    required String endpoint,
-    Map<String, dynamic>? body,
-    required T Function(dynamic data) fromJson,
+  Dio get dio => _dio;
+
+  Future<Response<T>> get<T>(
+    String endpoint, {
+    Map<String, dynamic>? queryParameters,
     bool requiresAuth = true,
   }) async {
-    final response = await _post(
-      endpoint: endpoint,
-      body: body,
+    try {
+      return await _dio.get<T>(
+        endpoint,
+        queryParameters: queryParameters,
+        options: Options(extra: {'requiresAuth': requiresAuth}),
+      );
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    }
+  }
+
+  Future<Response<T>> post<T>(
+    String endpoint, {
+    dynamic data,
+    bool requiresAuth = true,
+  }) async {
+    try {
+      return await _dio.post<T>(
+        endpoint,
+        data: data,
+        options: Options(extra: {'requiresAuth': requiresAuth}),
+      );
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    }
+  }
+
+  Future<Response<T>> put<T>(
+    String endpoint, {
+    dynamic data,
+    bool requiresAuth = true,
+  }) async {
+    try {
+      return await _dio.put<T>(
+        endpoint,
+        data: data,
+        options: Options(extra: {'requiresAuth': requiresAuth}),
+      );
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    }
+  }
+
+  Future<Response<T>> delete<T>(
+    String endpoint, {
+    dynamic data,
+    bool requiresAuth = true,
+  }) async {
+    try {
+      return await _dio.delete<T>(
+        endpoint,
+        data: data,
+        options: Options(extra: {'requiresAuth': requiresAuth}),
+      );
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    }
+  }
+
+  Future<T> postAndParse<T>(
+    String endpoint, {
+    dynamic data,
+    required T Function(dynamic json) fromJson,
+    bool requiresAuth = true,
+  }) async {
+    final response = await post(
+      endpoint,
+      data: data,
       requiresAuth: requiresAuth,
     );
 
-    return _parseResponse(response: response, fromJson: fromJson);
+    final baseResponse = BaseResponse<T>.fromJson(
+      response.data as Map<String, dynamic>,
+      fromJson,
+    );
+
+    if (!baseResponse.success || baseResponse.data == null) {
+      throw ApiException(errors: baseResponse.errors);
+    }
+
+    return baseResponse.data as T;
   }
 
-  Future<BaseResponse<T>> get<T>({
-    required String endpoint,
+  Future<BaseResponse<T>> getAndParse<T>(
+    String endpoint, {
     Map<String, dynamic>? queryParameters,
-    required T Function(dynamic data) fromJson,
+    required T Function(dynamic json) fromJson,
     bool requiresAuth = true,
   }) async {
-    final uri = Uri.parse('$baseUrl$endpoint').replace(
-      queryParameters: queryParameters?.map(
-        (key, value) => MapEntry(key, value.toString()),
-      ),
+    final response = await get(
+      endpoint,
+      queryParameters: queryParameters,
+      requiresAuth: requiresAuth,
     );
 
-    final headers = await _buildHeaders(requiresAuth: requiresAuth);
-
-    final response = await http.get(uri, headers: headers);
-
-    return _parseResponse(response: response, fromJson: fromJson);
-  }
-
-  Future<http.Response> _post({
-    required String endpoint,
-    Map<String, dynamic>? body,
-    required bool requiresAuth,
-  }) async {
-    final headers = await _buildHeaders(requiresAuth: requiresAuth);
-
-    return http.post(
-      Uri.parse('$baseUrl$endpoint'),
-      headers: headers,
-      body: body != null ? jsonEncode(body) : null,
+    final baseResponse = BaseResponse<T>.fromJson(
+      response.data as Map<String, dynamic>,
+      fromJson,
     );
+
+    if (!baseResponse.success) {
+      throw ApiException(errors: baseResponse.errors);
+    }
+
+    return baseResponse; // ✅ pagination masih ikut di sini
   }
 
-  Future<Map<String, String>> _buildHeaders({
-    required bool requiresAuth,
-  }) async {
-    final headers = <String, String>{
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
+  ApiException _handleDioException(DioException e) {
+    final responseData = e.response?.data;
 
-    if (requiresAuth) {
-      final accessToken = await secureStorage.getAccessToken();
+    if (responseData is Map<String, dynamic>) {
+      final rawErrors = responseData['errors'];
 
-      if (accessToken != null && accessToken.isNotEmpty) {
-        headers['Authorization'] = 'Bearer $accessToken';
+      if (rawErrors is List) {
+        final errors = rawErrors
+            .whereType<Map<String, dynamic>>()
+            .map(ApiError.fromJson)
+            .toList();
+
+        if (errors.isNotEmpty) {
+          return ApiException(errors: errors);
+        }
       }
     }
 
-    return headers;
+    return ApiException(
+      errors: [
+        ApiError(
+          statusCode: e.response?.statusCode ?? 0,
+          errorCode: _getErrorCode(e),
+          message: _getErrorMessage(e),
+          field: null,
+        ),
+      ],
+    );
   }
 
-  BaseResponse<T> _parseResponse<T>({
-    required http.Response response,
-    required T Function(dynamic data) fromJson,
-  }) {
-    final json = jsonDecode(response.body);
+  String _getErrorCode(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+        return 'Network.ConnectionTimeout';
 
-    return BaseResponse<T>.fromJson(json, fromJson);
+      case DioExceptionType.sendTimeout:
+        return 'Network.SendTimeout';
+
+      case DioExceptionType.receiveTimeout:
+        return 'Network.ReceiveTimeout';
+
+      case DioExceptionType.connectionError:
+        return 'Network.ConnectionError';
+
+      case DioExceptionType.cancel:
+        return 'Network.Cancelled';
+
+      case DioExceptionType.badResponse:
+        return 'Api.Error';
+
+      case DioExceptionType.badCertificate:
+        return 'Network.BadCertificate';
+
+      case DioExceptionType.unknown:
+        return 'Network.Unknown';
+      case DioExceptionType.transformTimeout:
+        throw UnimplementedError();
+    }
+  }
+
+  String _getErrorMessage(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+        return 'Koneksi ke server timeout.';
+
+      case DioExceptionType.sendTimeout:
+        return 'Pengiriman request timeout.';
+
+      case DioExceptionType.receiveTimeout:
+        return 'Server terlalu lama memberikan response.';
+
+      case DioExceptionType.connectionError:
+        return 'Tidak dapat terhubung ke server.';
+
+      case DioExceptionType.cancel:
+        return 'Request dibatalkan.';
+
+      case DioExceptionType.badCertificate:
+        return 'Sertifikat server tidak valid.';
+
+      case DioExceptionType.badResponse:
+        return 'Server mengembalikan error.';
+
+      case DioExceptionType.unknown:
+        return 'Terjadi kesalahan yang tidak diketahui.';
+      case DioExceptionType.transformTimeout:
+        throw UnimplementedError();
+    }
   }
 }

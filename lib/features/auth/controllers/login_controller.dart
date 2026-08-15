@@ -52,25 +52,15 @@ class LoginController extends GetxController {
         password: passwordController.text,
       );
 
-      if (!result.success || result.data == null) {
-        final message = result.errors.isNotEmpty
-            ? result.errors.first.message
-            : "login gagal";
-
-        throw Exception(message);
-      }
-
-      final loginData = result.data;
-
       await secureStorage.saveTokens(
-        accessToken: loginData!.accessToken.accessToken,
-        refreshToken: loginData.accessToken.refreshToken,
-        expiresIn: loginData.accessToken.expiresIn,
+        accessToken: result.accessToken.accessToken,
+        refreshToken: result.accessToken.refreshToken,
+        expiresIn: result.accessToken.expiresIn,
       );
 
       Get.snackbar(
         'Login',
-        'Credentials failed.',
+        'Login berhasil.',
         snackPosition: SnackPosition.BOTTOM,
       );
 
