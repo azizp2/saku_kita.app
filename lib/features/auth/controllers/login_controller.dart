@@ -58,13 +58,15 @@ class LoginController extends GetxController {
         expiresIn: result.accessToken.expiresIn,
       );
 
+
+
       Get.snackbar(
         'Login',
         'Login berhasil.',
         snackPosition: SnackPosition.BOTTOM,
       );
 
-      Get.offAllNamed(AppRoutes.forgotPassword);
+      Get.offAllNamed(AppRoutes.home);
     } catch (e) {
       Get.snackbar(
         'Login gagal',
@@ -89,10 +91,7 @@ class LoginController extends GetxController {
 
     // Email
     if (emailController.text.trim().isEmpty) {
-      emailError.value = 'Email wajib diisi';
-      isValid = false;
-    } else if (!GetUtils.isEmail(emailController.text.trim())) {
-      emailError.value = 'Format email tidak valid';
+      emailError.value = 'Username wajib diisi';
       isValid = false;
     } else {
       emailError.value = null;
@@ -101,9 +100,6 @@ class LoginController extends GetxController {
     // Password
     if (passwordController.text.isEmpty) {
       passwordError.value = 'Kata sandi wajib diisi';
-      isValid = false;
-    } else if (passwordController.text.length < 8) {
-      passwordError.value = 'Kata sandi minimal 8 karakter';
       isValid = false;
     } else {
       passwordError.value = null;

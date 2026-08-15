@@ -1,24 +1,19 @@
-import 'package:saku_kita_app/features/auth/models/token_response.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class LoginResponse {
-  final String fullName;
-  final String email;
-  final String role;
-  final TokenResponse accessToken;
+import 'token_response.dart';
 
-  LoginResponse({
-    required this.fullName,
-    required this.email,
-    required this.role,
-    required this.accessToken,
-  });
+part 'login_response.freezed.dart';
+part 'login_response.g.dart';
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    return LoginResponse(
-      fullName: json['fullName'] ?? '',
-      email: json['email'] ?? '',
-      role: json['role'] ?? '',
-      accessToken: TokenResponse.fromJson(json['accessToken']),
-    );
-  }
+@freezed
+abstract class LoginResponse with _$LoginResponse {
+  const factory LoginResponse({
+    required String fullName,
+    required String email,
+    required String role,
+    required TokenResponse accessToken,
+  }) = _LoginResponse;
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseFromJson(json);
 }

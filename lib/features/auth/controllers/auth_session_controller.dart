@@ -7,12 +7,12 @@ class AuthSessionController extends GetxController {
 
   AuthSessionController({required this.secureStorage});
 
-  @override
-  void onInit() {
-    super.onInit();
+  // @override
+  // void onInit() {
+  //   super.onInit();
 
-    print('AUTH SESSION: onInit');
-  }
+  //   print('AUTH SESSION: onInit');
+  // }
 
   @override
   void onReady() {
@@ -24,6 +24,7 @@ class AuthSessionController extends GetxController {
   }
 
   Future<void> checkSession() async {
+    await secureStorage.clearTokens();
     final hasToken = await secureStorage.hasAccessToken();
 
     if (hasToken) {

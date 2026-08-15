@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:saku_kita_app/core/models/base_response.dart';
 import 'package:saku_kita_app/core/network/interceptor/auth_interceptor.dart';
+import 'package:saku_kita_app/core/network/interceptor/logging_interceptor.dart';
 import 'package:saku_kita_app/core/storage/secure_storage.dart';
 
 import '../exceptions/api_exception.dart';
@@ -23,6 +25,9 @@ class ApiClient {
         ),
       ) {
     _dio.interceptors.add(AuthInterceptor(secureStorage: secureStorage));
+    if (kDebugMode) {
+      _dio.interceptors.add(LoggingInterceptor());
+    }
   }
 
   Dio get dio => _dio;
