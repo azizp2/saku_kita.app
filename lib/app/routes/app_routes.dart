@@ -8,6 +8,8 @@ abstract class AppRoutes {
   static const wallet = '/wallet';
   static const transaction = '/transaction';
   static const addTransaction = '/add-transaction';
+  static const budget = '/budget';
+  static const financialGoal = '/financial-goal';
 
   static const splash = '/splash';
 }

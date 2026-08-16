@@ -5,8 +5,13 @@ import 'package:saku_kita_app/features/auth/bindings/register_binding.dart';
 import 'package:saku_kita_app/features/auth/pages/forgot_password_page.dart';
 import 'package:saku_kita_app/features/auth/pages/otp_page.dart';
 import 'package:saku_kita_app/features/auth/pages/splash_page.dart';
+import 'package:saku_kita_app/features/budget/bindings/budget_bindind.dart';
+import 'package:saku_kita_app/features/budget/pages/budget_page.dart';
 import 'package:saku_kita_app/features/dashboard/bindings/dashboard_binding.dart';
 import 'package:saku_kita_app/features/dashboard/pages/dashboard_page.dart';
+import 'package:saku_kita_app/features/financial_goal/bindings/financial_goal_binding.dart';
+import 'package:saku_kita_app/features/financial_goal/pages/financial_goal_page.dart';
+import 'package:saku_kita_app/features/financial_goal/widgets/financial_goal_card.dart';
 import 'package:saku_kita_app/features/home/page/HomePage.dart';
 import 'package:saku_kita_app/features/transaction/bindings/add_transaction_binding.dart';
 import 'package:saku_kita_app/features/transaction/bindings/transaction_binding.dart';
@@ -74,6 +79,18 @@ class AppPages {
       name: AppRoutes.addTransaction,
       page: () => const AddTransactionPage(),
       binding: AddTransactionBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.budget,
+      page: () => const BudgetPage(),
+      binding: BudgetBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.financialGoal,
+      page: () => const FinancialGoalPage(),
+      binding: FinancialGoalBinding(),
     ),
 
     GetPage(name: AppRoutes.home, page: () => Homepage()),
