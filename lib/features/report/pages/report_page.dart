@@ -14,6 +14,16 @@ class ReportPage extends GetView<ReportController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Report',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
+            color: AppColors.text,
+          ),
+        ),
+      ),
       backgroundColor: Colors.white,
 
       body: SafeArea(
@@ -22,8 +32,6 @@ class ReportPage extends GetView<ReportController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Header(),
-
               const SizedBox(height: 18),
 
               const ReportMonthSelector(),
@@ -61,26 +69,6 @@ class ReportPage extends GetView<ReportController> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: Get.back,
-          child: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 19,
-            color: AppColors.text,
-          ),
-        ),
-
-        const Spacer(),
-      ],
     );
   }
 }

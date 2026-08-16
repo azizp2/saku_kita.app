@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:saku_kita_app/core/widgets/app_bottom_navigation.dart';
-import 'package:saku_kita_app/core/widgets/app_floating_action_button.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../controllers/account_controller.dart';
@@ -38,9 +36,6 @@ class AccountPage extends GetView<AccountController> {
           ),
         ),
       ),
-      bottomNavigationBar: AppBottomNavigation(currentIndex: 3),
-      floatingActionButton: AppFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

@@ -71,18 +71,6 @@ class FinancialGoalPage extends GetView<FinancialGoalController> {
           ),
         ),
       ),
-
-      bottomNavigationBar: const AppBottomNavigation(currentIndex: 0),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: controller.addGoal,
-        backgroundColor: AppColors.primary,
-        elevation: 4,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, size: 30, color: Colors.white),
-      ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

@@ -87,12 +87,6 @@ class TransactionPage extends GetView<TransactionController> {
           ],
         ),
       ),
-
-      bottomNavigationBar: const AppBottomNavigation(currentIndex: 1),
-
-      floatingActionButton: AppFloatingActionButton(),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

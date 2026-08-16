@@ -61,11 +61,6 @@ class BudgetPage extends GetView<BudgetController> {
           ),
         ),
       ),
-
-      bottomNavigationBar: const AppBottomNavigation(currentIndex: 2),
-
-      floatingActionButton: AppFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

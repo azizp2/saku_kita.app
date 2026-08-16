@@ -9,12 +9,11 @@ import 'package:saku_kita_app/features/auth/pages/otp_page.dart';
 import 'package:saku_kita_app/features/auth/pages/splash_page.dart';
 import 'package:saku_kita_app/features/budget/bindings/budget_bindind.dart';
 import 'package:saku_kita_app/features/budget/pages/budget_page.dart';
-import 'package:saku_kita_app/features/dashboard/bindings/dashboard_binding.dart';
-import 'package:saku_kita_app/features/dashboard/pages/dashboard_page.dart';
 import 'package:saku_kita_app/features/financial_goal/bindings/financial_goal_binding.dart';
 import 'package:saku_kita_app/features/financial_goal/pages/financial_goal_page.dart';
-import 'package:saku_kita_app/features/financial_goal/widgets/financial_goal_card.dart';
 import 'package:saku_kita_app/features/home/page/HomePage.dart';
+import 'package:saku_kita_app/features/main/bindings/main_binding.dart';
+import 'package:saku_kita_app/features/main/pages/main_page.dart';
 import 'package:saku_kita_app/features/report/bindings/report_binding.dart';
 import 'package:saku_kita_app/features/report/pages/report_page.dart';
 import 'package:saku_kita_app/features/transaction/bindings/add_transaction_binding.dart';
@@ -31,12 +30,11 @@ import 'app_routes.dart';
 
 class AppPages {
   static final routes = [
-    GetPage(
-      name: AppRoutes.dashboard,
-      page: () => const DashboardPage(),
-      binding: DashboardBinding(),
-    ),
-
+    // GetPage(
+    //   name: AppRoutes.dashboard,
+    //   page: () => const DashboardPage(),
+    //   binding: DashboardBinding(),
+    // ),
     GetPage(
       name: AppRoutes.login,
       page: () => const LoginPage(),
@@ -72,7 +70,6 @@ class AppPages {
       page: () => const WalletPage(),
       binding: WalletBinding(),
     ),
-
     GetPage(
       name: AppRoutes.transaction,
       page: () => const TransactionPage(),
@@ -107,6 +104,12 @@ class AppPages {
       name: AppRoutes.account,
       page: () => const AccountPage(),
       binding: AccountBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.main,
+      page: () => const MainPage(),
+      binding: MainBinding(),
     ),
 
     GetPage(name: AppRoutes.home, page: () => Homepage()),

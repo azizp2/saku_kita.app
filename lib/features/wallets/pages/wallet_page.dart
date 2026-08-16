@@ -15,18 +15,23 @@ class WalletPage extends GetView<WalletController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
-
+      appBar: AppBar(
+        title: Text(
+          'Wallet',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
+            color: AppColors.text,
+          ),
+        ),
+      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const WalletHeader(),
-
-              const SizedBox(height: 20),
-
               WalletBalanceCard(
                 balance: controller.walletBalance.value,
                 onTap: () {
@@ -150,20 +155,6 @@ class WalletPage extends GetView<WalletController> {
           ),
         ),
       ),
-
-      bottomNavigationBar: const AppBottomNavigation(currentIndex: 0),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: tambah transaksi
-        },
-        backgroundColor: AppColors.primary,
-        elevation: 4,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, size: 30, color: Colors.white),
-      ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

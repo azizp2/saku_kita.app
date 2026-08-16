@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saku_kita_app/core/widgets/app_bottom_navigation.dart';
 import 'package:saku_kita_app/core/widgets/app_floating_action_button.dart';
+import 'package:saku_kita_app/features/dashboard/widgets/home_menu_section.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../controllers/dashboard_controller.dart';
@@ -27,8 +28,10 @@ class DashboardPage extends GetView<DashboardController> {
               const DashboardHeader(),
 
               const SizedBox(height: 20),
-
               const BalanceCard(),
+              const SizedBox(height: 20),
+
+              const HomeMenuSection(),
 
               const SizedBox(height: 24),
 
@@ -47,11 +50,6 @@ class DashboardPage extends GetView<DashboardController> {
           ),
         ),
       ),
-
-      bottomNavigationBar: const AppBottomNavigation(currentIndex: 0),
-
-      floatingActionButton: AppFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
