@@ -1,0 +1,33 @@
+
+AUTH
+├── POST /auth/register
+├── POST /auth/login
+├── POST /auth/refresh
+├── POST /auth/logout
+├── POST /auth/forgot-password
+├── POST /auth/verify-otp
+└── POST /auth/reset-password
+
+HOUSEHOLD
+├── GET  /household
+├── POST /household
+└── GET  /household/members
+
+WALLET
+├── GET  /wallets
+├── POST /wallets
+├── PUT  /wallets/{id}
+└── DELETE /wallets/{id}
+
+CATEGORY
+└── GET /categories
+
+TRANSACTION
+├── GET  /transactions
+├── GET  /transactions/{id}
+├── POST /transactions
+├── PUT  /transactions/{id}
+└── DELETE /transactions/{id}
+
+DASHBOARD
+└── GET /dashboard

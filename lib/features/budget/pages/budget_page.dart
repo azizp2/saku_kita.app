@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saku_kita_app/core/widgets/app_bottom_navigation.dart';
+import 'package:saku_kita_app/core/widgets/app_floating_action_button.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../controllers/budget_controller.dart';
@@ -63,20 +64,7 @@ class BudgetPage extends GetView<BudgetController> {
 
       bottomNavigationBar: const AppBottomNavigation(currentIndex: 2),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.snackbar(
-            'Tambah Transaksi',
-            'Form tambah transaksi akan dibuka.',
-            snackPosition: SnackPosition.BOTTOM,
-          );
-        },
-        backgroundColor: AppColors.primary,
-        elevation: 4,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, size: 30, color: Colors.white),
-      ),
-
+      floatingActionButton: AppFloatingActionButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:saku_kita_app/features/account/bindings/account_binding.dart';
+import 'package:saku_kita_app/features/account/pages/account_page.dart';
 import 'package:saku_kita_app/features/auth/bindings/auth_session_binding.dart';
 import 'package:saku_kita_app/features/auth/bindings/otp_binding.dart';
 import 'package:saku_kita_app/features/auth/bindings/register_binding.dart';
@@ -99,6 +101,12 @@ class AppPages {
       name: AppRoutes.report,
       page: () => const ReportPage(),
       binding: ReportBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.account,
+      page: () => const AccountPage(),
+      binding: AccountBinding(),
     ),
 
     GetPage(name: AppRoutes.home, page: () => Homepage()),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saku_kita_app/core/widgets/app_bottom_navigation.dart';
+import 'package:saku_kita_app/core/widgets/app_floating_action_button.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../controllers/transaction_controller.dart';
@@ -89,15 +90,7 @@ class TransactionPage extends GetView<TransactionController> {
 
       bottomNavigationBar: const AppBottomNavigation(currentIndex: 1),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: tambah transaksi
-        },
-        backgroundColor: AppColors.primary,
-        elevation: 4,
-        shape: const CircleBorder(),
-        child: const Icon(Icons.add, size: 30, color: Colors.white),
-      ),
+      floatingActionButton: AppFloatingActionButton(),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

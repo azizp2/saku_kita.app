@@ -18,19 +18,19 @@ class AppBottomNavigation extends StatelessWidget {
 
       case 1:
         if (currentIndex != 1) {
-          Get.offNamed(AppRoutes.dashboard);
+          Get.offNamed(AppRoutes.transaction);
         }
         break;
 
       case 2:
         if (currentIndex != 2) {
-          Get.offNamed(AppRoutes.dashboard);
+          Get.offNamed(AppRoutes.budget);
         }
         break;
 
       case 3:
         if (currentIndex != 3) {
-          Get.offNamed(AppRoutes.dashboard);
+          Get.offNamed(AppRoutes.account);
         }
         break;
     }

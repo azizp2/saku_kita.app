@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saku_kita_app/core/widgets/app_bottom_navigation.dart';
+import 'package:saku_kita_app/core/widgets/app_floating_action_button.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../controllers/dashboard_controller.dart';
@@ -49,21 +50,8 @@ class DashboardPage extends GetView<DashboardController> {
 
       bottomNavigationBar: const AppBottomNavigation(currentIndex: 0),
 
-      floatingActionButton: _FloatingActionButton(),
+      floatingActionButton: AppFloatingActionButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-}
-
-class _FloatingActionButton extends GetView<DashboardController> {
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: controller.addTransaction,
-      backgroundColor: AppColors.primary,
-      elevation: 4,
-      shape: const CircleBorder(),
-      child: const Icon(Icons.add, size: 32, color: Colors.white),
     );
   }
 }

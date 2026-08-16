@@ -11,6 +11,7 @@ abstract class AppRoutes {
   static const budget = '/budget';
   static const financialGoal = '/financial-goal';
   static const report = '/report';
+  static const account = '/account';
 
   static const splash = '/splash';
 }
