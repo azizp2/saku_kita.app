@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/routes/app_routes.dart';
 import 'package:saku_kita_app/features/auth/controllers/register_controller.dart';
 
 import '../../../core/widgets/app_button.dart';
@@ -88,7 +89,7 @@ class RegisterForm extends GetView<RegisterController> {
           () => AppButton(
             text: 'Daftar',
             loading: controller.isLoading.value,
-            onPressed: controller.register,
+            onPressed: () => Get.toNamed(AppRoutes.otp),
           ),
         ),
       ],

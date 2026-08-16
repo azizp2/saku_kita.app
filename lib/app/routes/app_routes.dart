@@ -3,6 +3,11 @@ abstract class AppRoutes {
   static const login = '/login';
   static const register = '/register';
   static const forgotPassword = '/forgot-password';
+  static const otp = '/otp';
+  static const dashboard = '/dashboard';
+  static const wallet = '/wallet';
+  static const transaction = '/transaction';
+  static const addTransaction = '/add-transaction';
 
   static const splash = '/splash';
 }
