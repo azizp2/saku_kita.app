@@ -13,6 +13,8 @@ import 'package:saku_kita_app/features/financial_goal/bindings/financial_goal_bi
 import 'package:saku_kita_app/features/financial_goal/pages/financial_goal_page.dart';
 import 'package:saku_kita_app/features/financial_goal/widgets/financial_goal_card.dart';
 import 'package:saku_kita_app/features/home/page/HomePage.dart';
+import 'package:saku_kita_app/features/report/bindings/report_binding.dart';
+import 'package:saku_kita_app/features/report/pages/report_page.dart';
 import 'package:saku_kita_app/features/transaction/bindings/add_transaction_binding.dart';
 import 'package:saku_kita_app/features/transaction/bindings/transaction_binding.dart';
 import 'package:saku_kita_app/features/transaction/pages/add_transaction_page.dart';
@@ -91,6 +93,12 @@ class AppPages {
       name: AppRoutes.financialGoal,
       page: () => const FinancialGoalPage(),
       binding: FinancialGoalBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.report,
+      page: () => const ReportPage(),
+      binding: ReportBinding(),
     ),
 
     GetPage(name: AppRoutes.home, page: () => Homepage()),

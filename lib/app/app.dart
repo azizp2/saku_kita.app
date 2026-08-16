@@ -15,7 +15,7 @@ class SakuKitaApp extends StatelessWidget {
       title: 'Saku.Kita',
       theme: AppTheme.light,
 
-      initialRoute: AppRoutes.financialGoal,
+      initialRoute: AppRoutes.report,
       getPages: AppPages.routes,
       // initialBinding: DashboardBinding(),
     );
