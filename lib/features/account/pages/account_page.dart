@@ -106,7 +106,7 @@ class _AccountHeader extends StatelessWidget {
                     Text(
                       controller.userName,
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 14,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
@@ -117,7 +117,7 @@ class _AccountHeader extends StatelessWidget {
                     Text(
                       controller.joinedDate,
                       style: const TextStyle(
-                        fontSize: 9,
+                        fontSize: 10,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),

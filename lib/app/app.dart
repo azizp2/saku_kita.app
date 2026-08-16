@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/app_binding.dart';
 import 'package:saku_kita_app/app/routes/app_pages.dart';
 import 'package:saku_kita_app/app/routes/app_routes.dart';
+import 'package:saku_kita_app/features/auth/bindings/auth_session_binding.dart';
 
 import 'theme/app_theme.dart';
 
@@ -15,9 +17,9 @@ class SakuKitaApp extends StatelessWidget {
       title: 'Saku.Kita',
       theme: AppTheme.light,
 
-      initialRoute: AppRoutes.main,
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.routes,
-      // initialBinding: DashboardBinding(),
+      initialBinding: AppBinding(),
     );
   }
 }

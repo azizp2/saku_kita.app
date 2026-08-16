@@ -7,18 +7,16 @@ class AuthSessionController extends GetxController {
 
   AuthSessionController({required this.secureStorage});
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
+  @override
+  void onInit() {
+    super.onInit();
 
-  //   print('AUTH SESSION: onInit');
-  // }
+    print('AUTH SESSION: onInit');
+  }
 
   @override
   void onReady() {
     super.onReady();
-
-    print('AUTH SESSION: onReady');
 
     checkSession();
   }

@@ -28,7 +28,9 @@ class DashboardPage extends GetView<DashboardController> {
               const DashboardHeader(),
 
               const SizedBox(height: 20),
+
               const BalanceCard(),
+
               const SizedBox(height: 20),
 
               const HomeMenuSection(),

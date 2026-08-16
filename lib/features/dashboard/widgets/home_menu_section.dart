@@ -38,10 +38,10 @@ class HomeMenuSection extends StatelessWidget {
               ),
 
               _QuickMenuItem(
-                icon: Icons.insert_chart_outlined_rounded,
-                title: 'Laporan',
+                icon: Icons.category_outlined,
+                title: 'Kategori',
                 onTap: () {
-                  Get.toNamed(AppRoutes.report);
+                  // nanti
                 },
               ),
 
@@ -62,10 +62,10 @@ class HomeMenuSection extends StatelessWidget {
               ),
 
               _QuickMenuItem(
-                icon: Icons.category_outlined,
-                title: 'Kategori',
+                icon: Icons.insert_chart_outlined_rounded,
+                title: 'Laporan',
                 onTap: () {
-                  // nanti
+                  Get.toNamed(AppRoutes.report);
                 },
               ),
             ],

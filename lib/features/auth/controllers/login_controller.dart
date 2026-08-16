@@ -58,15 +58,13 @@ class LoginController extends GetxController {
         expiresIn: result.accessToken.expiresIn,
       );
 
-
-
       Get.snackbar(
         'Login',
         'Login berhasil.',
         snackPosition: SnackPosition.BOTTOM,
       );
 
-      Get.offAllNamed(AppRoutes.home);
+      Get.offAllNamed(AppRoutes.main);
     } catch (e) {
       Get.snackbar(
         'Login gagal',

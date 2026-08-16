@@ -20,7 +20,7 @@ class AccountMenuItem extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 46,
+        height: 60,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Row(
           children: [
@@ -32,7 +32,7 @@ class AccountMenuItem extends StatelessWidget {
               child: Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: AppColors.text,
                 ),
