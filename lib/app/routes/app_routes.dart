@@ -10,12 +10,10 @@ abstract class AppRoutes {
   static const main = '/main';
 
   static const dashboard = '/dashboard';
+  static const category = '/category';
   static const wallet = '/wallet';
-  static const transaction = '/transaction';
-  static const budget = '/budget';
   static const financialGoal = '/financial-goal';
   static const report = '/report';
-  static const account = '/account';
 
   static const addTransaction = '/add-transaction';
 }

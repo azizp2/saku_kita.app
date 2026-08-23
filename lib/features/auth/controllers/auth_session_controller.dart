@@ -22,11 +22,11 @@ class AuthSessionController extends GetxController {
   }
 
   Future<void> checkSession() async {
-    await secureStorage.clearTokens();
+    // await secureStorage.clearTokens();
     final hasToken = await secureStorage.hasAccessToken();
 
     if (hasToken) {
-      Get.offAllNamed(AppRoutes.home);
+      Get.offAllNamed(AppRoutes.main);
     } else {
       Get.offAllNamed(AppRoutes.login);
     }

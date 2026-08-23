@@ -41,7 +41,7 @@ class HomeMenuSection extends StatelessWidget {
                 icon: Icons.category_outlined,
                 title: 'Kategori',
                 onTap: () {
-                  // nanti
+                  Get.toNamed(AppRoutes.category);
                 },
               ),
 
