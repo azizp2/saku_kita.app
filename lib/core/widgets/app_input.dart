@@ -39,14 +39,7 @@ class AppInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            color: AppColors.muted,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        Text(label, style: Theme.of(context).textTheme.labelLarge),
 
         const SizedBox(height: 8),
 

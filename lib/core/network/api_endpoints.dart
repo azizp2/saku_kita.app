@@ -4,5 +4,5 @@ class ApiEndpoints {
 
   // category
 
-  static const String getListCategory = '/api/category';
+  static const String category = '/api/category';
 }

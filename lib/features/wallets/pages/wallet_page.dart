@@ -24,6 +24,7 @@ class WalletPage extends GetView<WalletController> {
             color: AppColors.text,
           ),
         ),
+        actions: [],
       ),
       backgroundColor: Colors.white,
       body: SafeArea(

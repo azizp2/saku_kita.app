@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:saku_kita_app/app/theme/app_colors.dart';
 import 'package:saku_kita_app/core/widgets/app_not_found.dart';
 import 'package:saku_kita_app/features/category/controllers/category_controller.dart';
+import 'package:saku_kita_app/features/category/widgets/category_form_bottom_sheet.dart';
 import 'package:saku_kita_app/features/category/widgets/category_section_label.dart';
 import 'package:saku_kita_app/features/category/widgets/category_group.dart';
 
@@ -39,23 +40,23 @@ class CategoryPage extends GetView<CategoryController> {
           }
 
           final systemCategories = controller.categories
-              .where((c) => c.isSystem)
+              .where((c) => c.type == 'expense')
               .toList();
           final customCategories = controller.categories
-              .where((c) => !c.isSystem)
+              .where((c) => c.type != 'expense')
               .toList();
 
           return ListView(
             padding: const EdgeInsets.fromLTRB(12, 16, 12, 24),
             children: [
               if (systemCategories.isNotEmpty) ...[
-                SectionLabel(text: "Default"),
+                SectionLabel(text: "Expense"),
                 const SizedBox(height: 10),
                 CategoryGroup(categories: systemCategories),
                 const SizedBox(height: 24),
               ],
               if (customCategories.isNotEmpty) ...[
-                const SectionLabel(text: "Kategori Saya"),
+                const SectionLabel(text: "Income"),
                 const SizedBox(height: 10),
                 CategoryGroup(categories: customCategories),
               ],
@@ -65,6 +66,11 @@ class CategoryPage extends GetView<CategoryController> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          Get.bottomSheet(
+            const CategoryFormBottomSheet(),
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+          );
           // TODO: navigasi ke halaman tambah kategori
         },
         backgroundColor: AppColors.primary,
