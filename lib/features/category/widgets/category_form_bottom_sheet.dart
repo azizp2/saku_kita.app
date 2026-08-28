@@ -1,18 +1,44 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saku_kita_app/app/theme/app_colors.dart';
 import 'package:saku_kita_app/core/constants/category_icons.dart';
+import 'package:saku_kita_app/core/utils/color_utils.dart';
+import 'package:saku_kita_app/core/widgets/app_button.dart';
 import 'package:saku_kita_app/core/widgets/app_input.dart';
-import 'package:saku_kita_app/features/transaction/widgets/form/transaction_input.dart';
+import 'package:saku_kita_app/features/category/models/category_response.dart';
 import '../controllers/category_controller.dart';
 
-class CategoryFormBottomSheet extends StatelessWidget {
-  const CategoryFormBottomSheet({super.key});
+class CategoryFormBottomSheet extends StatefulWidget {
+  const CategoryFormBottomSheet({super.key, this.category});
+
+  final CategoryResponse? category;
+
+  @override
+  State<CategoryFormBottomSheet> createState() =>
+      _CategoryFormBottomSheetState();
+}
+
+class _CategoryFormBottomSheetState extends State<CategoryFormBottomSheet> {
+  late final CategoryController c;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    c = Get.find<CategoryController>();
+
+    if (widget.category != null) {
+      c.setEditCategory(widget.category!);
+    } else {
+      c.resetForm();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final c =
-        Get.find<CategoryController>(); // ambil instance yg sama dari binding
+    final isEdit = widget.category != null;
 
     return SingleChildScrollView(
       child: Padding(
@@ -42,9 +68,12 @@ class CategoryFormBottomSheet extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Text(
-                  'Tambah Category',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  '${isEdit ? 'Edit' : 'Tambah'} Category',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 AppInput(
@@ -97,7 +126,7 @@ class CategoryFormBottomSheet extends StatelessWidget {
                   () => Wrap(
                     spacing: 12,
                     runSpacing: 12,
-                    children: c.colorPalette.map((color) {
+                    children: colorPalette.map((color) {
                       final isSelected = c.selectedColor.value == color;
                       return GestureDetector(
                         onTap: () => c.setColor(color),
@@ -198,27 +227,10 @@ class CategoryFormBottomSheet extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 Obx(
-                  () => SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: c.isSubmitting.value ? null : c.submitCategory,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'Simpan Transaksi',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                  () => AppButton(
+                    text: isEdit ? 'Update Transaksi' : 'Simapn Transaksi',
+                    loading: c.isLoading.value,
+                    onPressed: c.submitCategory,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -230,3 +242,17 @@ class CategoryFormBottomSheet extends StatelessWidget {
     );
   }
 }
+
+
+// class CategoryFormBottomSheet extends StatefulWidget {
+//   const CategoryFormBottomSheet({super.key, this.category});
+
+//   final CategoryResponse? category;
+
+//   @override
+//   State<StatefulWidget> createState() {
+//     throw UnimplementedError();
+//   }
+
+  
+// }

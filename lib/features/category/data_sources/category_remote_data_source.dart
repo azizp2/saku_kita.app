@@ -29,4 +29,23 @@ class CategoryRemoteDataSource {
 
     return false;
   }
+
+  Future<bool> update(String id, CategoryRequest param) async {
+    final response = await apiClient.patch(
+      '${ApiEndpoints.category}/$id',
+      data: param.toJson(),
+    );
+
+    if (response.statusCode == 200) return true;
+
+    return false;
+  }
+
+  Future<bool> delete(String id) async {
+    final response = await apiClient.delete('${ApiEndpoints.category}/$id');
+
+    if (response.statusCode == 200) return true;
+
+    return false;
+  }
 }

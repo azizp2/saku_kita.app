@@ -15,14 +15,25 @@ class CategoryPage extends GetView<CategoryController> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7FB),
       appBar: AppBar(
+        backgroundColor: AppColors.primary,
+        surfaceTintColor: AppColors.surface,
+        iconTheme: IconThemeData(color: AppColors.surface),
         title: Text(
           "Category",
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
-            color: AppColors.text,
+            color: AppColors.surface,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh, color: AppColors.surface),
+            onPressed: () {
+              controller.fetchCategories();
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Obx(() {
@@ -39,26 +50,27 @@ class CategoryPage extends GetView<CategoryController> {
             );
           }
 
-          final systemCategories = controller.categories
+          final expense = controller.categories
               .where((c) => c.type == 'expense')
               .toList();
-          final customCategories = controller.categories
+
+          final income = controller.categories
               .where((c) => c.type != 'expense')
               .toList();
 
           return ListView(
             padding: const EdgeInsets.fromLTRB(12, 16, 12, 24),
             children: [
-              if (systemCategories.isNotEmpty) ...[
+              if (expense.isNotEmpty) ...[
                 SectionLabel(text: "Expense"),
                 const SizedBox(height: 10),
-                CategoryGroup(categories: systemCategories),
+                CategoryGroup(categories: expense),
                 const SizedBox(height: 24),
               ],
-              if (customCategories.isNotEmpty) ...[
+              if (income.isNotEmpty) ...[
                 const SectionLabel(text: "Income"),
                 const SizedBox(height: 10),
-                CategoryGroup(categories: customCategories),
+                CategoryGroup(categories: income),
               ],
             ],
           );
@@ -71,7 +83,6 @@ class CategoryPage extends GetView<CategoryController> {
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
           );
-          // TODO: navigasi ke halaman tambah kategori
         },
         backgroundColor: AppColors.primary,
         icon: const Icon(Icons.add_rounded, color: Colors.white),

@@ -10,4 +10,7 @@ class CategoryRepo {
   Future<List<CategoryResponse>?> getList() => remoteDataSource.getList();
 
   Future<bool> create(CategoryRequest param) => remoteDataSource.create(param);
+  Future<bool> update(String id, CategoryRequest param) =>
+      remoteDataSource.update(id, param);
+  Future<bool> delete(String id) => remoteDataSource.delete(id);
 }

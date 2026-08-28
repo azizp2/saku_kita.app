@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:saku_kita_app/core/constants/category_icons.dart';
+import 'package:saku_kita_app/core/utils/color_utils.dart';
+import 'package:saku_kita_app/features/category/controllers/category_controller.dart';
 import 'package:saku_kita_app/features/category/models/category_response.dart';
+import 'package:saku_kita_app/features/category/widgets/category_form_bottom_sheet.dart';
 
 class CategoryTile extends StatelessWidget {
   const CategoryTile({required this.category});
@@ -23,13 +30,25 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _colorFor(category.name);
+    // final color = _colorFor(category.name);
+    // final initial = category.name.isNotEmpty && category.icon!.isNotEmpty
+    //     ? category.icon![0].toUpperCase()
+    //     : "?";
+
+    final color = hexToColor(category.color, fallback: const Color(0xFF6C5CE7));
+    final icon = CategoryIcons.getIcon(category.icon);
     final initial = category.name.isNotEmpty
         ? category.name[0].toUpperCase()
         : "?";
 
     return InkWell(
       onTap: () {
+        final categoryId = category.id;
+        Get.bottomSheet(
+          CategoryFormBottomSheet(category: category),
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+        );
         // TODO: navigasi ke detail/edit kategori
       },
       child: Padding(
@@ -44,14 +63,7 @@ class CategoryTile extends StatelessWidget {
                 color: color.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Text(
-                initial,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                ),
-              ),
+              child: Icon(icon, color: color, size: 20),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -64,26 +76,51 @@ class CategoryTile extends StatelessWidget {
                 ),
               ),
             ),
-            if (category.isSystem)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF0F0F5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  "default",
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF8B8B9E),
-                  ),
-                ),
-              )
-            else
-              const Icon(Icons.chevron_right_rounded, color: Color(0xFFC4C4D0)),
+            const Icon(Icons.chevron_right_rounded, color: Color(0xFFC4C4D0)),
+            IconButton(
+              onPressed: () => _showDeleteConfirmation(context),
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                color: Colors.redAccent,
+                size: 21,
+              ),
+              tooltip: 'Delete category',
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text(
+          'Hapus Category?',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          'Category "${category.name}" akan dihapus. '
+          'Apakah kamu yakin?',
+        ),
+        actions: [
+          TextButton(onPressed: () => Get.back(), child: const Text('Batal')),
+          ElevatedButton(
+            onPressed: () {
+              Get.back();
+
+              final controller = Get.find<CategoryController>();
+
+              controller.deleteCategory(category.id);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+              elevation: 0,
+            ),
+            child: const Text('Hapus'),
+          ),
+        ],
       ),
     );
   }

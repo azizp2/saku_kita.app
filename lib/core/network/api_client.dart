@@ -80,6 +80,22 @@ class ApiClient {
     }
   }
 
+  Future<Response<T>> patch<T>(
+    String endpoint, {
+    dynamic data,
+    bool requiresAuth = true,
+  }) async {
+    try {
+      return await _dio.patch<T>(
+        endpoint,
+        data: data,
+        options: Options(extra: {'requiresAuth': requiresAuth}),
+      );
+    } on DioException catch (e) {
+      throw _handleDioException(e);
+    }
+  }
+
   Future<Response<T>> delete<T>(
     String endpoint, {
     dynamic data,

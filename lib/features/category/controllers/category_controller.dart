@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
+import 'package:saku_kita_app/app/theme/app_colors.dart';
+import 'package:saku_kita_app/core/utils/color_utils.dart';
 import 'package:saku_kita_app/features/category/models/category_request.dart';
 import 'package:saku_kita_app/features/category/models/category_response.dart';
 import 'package:saku_kita_app/features/category/repo/category_repo.dart';
 
 class CategoryController extends GetxController {
+  final CategoryRepo categoryRepo;
+
+  CategoryController({required this.categoryRepo});
+
   final RxBool isLoading = false.obs;
   final Rx<String?> errorMessage = Rx<String?>(null);
   final RxList<CategoryResponse> categories = <CategoryResponse>[].obs;
 
-  final CategoryRepo categoryRepo;
+  final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
 
-  CategoryController({required this.categoryRepo});
+  final List<String> categoryTypes = ['Income', 'Expense'];
+
+  final Rxn<Color> selectedColor = Rxn<Color>();
+  final Rxn<String> selectedIcon = Rxn<String>();
+
+  final RxString selectedType = 'expense'.obs;
+  final RxBool isSubmitting = false.obs;
+
+  CategoryResponse? editingCategory;
 
   @override
   Future<void> onReady() async {
     super.onReady();
     await fetchCategories();
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    super.onClose();
   }
 
   Future<void> fetchCategories() async {
@@ -34,47 +54,38 @@ class CategoryController extends GetxController {
         e.toString().replaceFirst('Exception: ', ''),
         snackPosition: SnackPosition.BOTTOM,
       );
-      // errorMessage.value = 'Gagal memuat kategori. Coba lagi.';
     } finally {
       isLoading.value = false;
     }
   }
 
-  // State and logic create category
-  final formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
+  void setEditCategory(CategoryResponse category) {
+    editingCategory = category;
 
-  final List<String> categoryTypes = ['Income', 'Expense'];
-  final selectedColor = Rxn<Color>(); // default value, non-nullable
-  Rxn<String> selectedIcon = Rxn<String>();
+    nameController.text = category.name;
+    selectedType.value = category.type!;
+    selectedIcon.value = category.icon;
 
-  var selectedType = 'expense'.obs;
-  var isSubmitting = false.obs;
+    selectedColor.value = hexToColor(
+      category.color,
+      fallback: AppColors.primary,
+    );
+  }
 
-  final List<Color> colorPalette = [
-    const Color(0xFFEF4444), // red
-    const Color(0xFFF97316), // orange
-    const Color(0xFFF59E0B), // amber
-    const Color(0xFFEAB308), // yellow
-    const Color(0xFF84CC16), // lime
-    const Color(0xFF22C55E), // green
-    const Color(0xFF14B8A6), // teal
-    const Color(0xFF06B6D4), // cyan
-    const Color(0xFF3B82F6), // blue
-    const Color(0xFF6366F1), // indigo
-    const Color(0xFF8B5CF6), // violet
-    const Color(0xFFEC4899), // pink
-    const Color(0xFFF43F5E), // rose
-    const Color(0xFF64748B), // slate
-  ];
+  void setIcon(String key) {
+    selectedIcon.value = key;
+  }
 
-  void setIcon(String key) => selectedIcon.value = key;
+  void setColor(Color color) {
+    selectedColor.value = color;
+  }
 
-  void setColor(Color color) => selectedColor.value = color;
-
-  void setType(String value) => selectedType.value = value;
+  void setType(String value) {
+    selectedType.value = value;
+  }
 
   void resetForm() {
+    editingCategory = null;
     nameController.clear();
     selectedIcon.value = null;
     selectedColor.value = null;
@@ -83,42 +94,64 @@ class CategoryController extends GetxController {
   Future<void> submitCategory() async {
     if (!formKey.currentState!.validate()) return;
 
-    isSubmitting.value = true;
+    isLoading.value = true;
+
     try {
       final request = CategoryRequest(
         name: nameController.text.trim(),
         type: selectedType.value,
         color: selectedColor.value != null
             ? colorToHex(selectedColor.value!)
-            : "",
+            : '',
         icon: selectedIcon.value,
       );
-      final result = await categoryRepo.create(request);
-      if (result) await fetchCategories();
 
-      isSubmitting.value = false;
+      final result = editingCategory != null
+          ? await categoryRepo.update(editingCategory!.id, request)
+          : await categoryRepo.create(request);
 
-      WidgetsBinding.instance.addPostFrameCallback((_) => resetForm());
+      if (result) {
+        await fetchCategories();
+      }
+
+      resetForm();
+      Get.back();
+
       Get.snackbar(
         'Sukses',
-        'Category berhasil ditambahkan',
+        'Category berhasil ${editingCategory != null ? 'ditambahkan' : 'diupdate'}',
         snackPosition: SnackPosition.BOTTOM,
       );
     } catch (e) {
-      isSubmitting.value = false;
       Get.snackbar(
         'Error',
         e.toString().replaceFirst('Exception: ', ''),
         snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
-      isSubmitting.value = false;
+      isLoading.value = false;
     }
   }
 
-  @override
-  void onClose() {
-    nameController.dispose();
-    super.onClose();
+  Future<void> deleteCategory(String id) async {
+    isLoading.value = true;
+
+    try {
+      await categoryRepo.remoteDataSource.delete(id);
+
+      Get.snackbar(
+        'Sukses',
+        'Category berhasil dihapus.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        e.toString().replaceFirst('Exception: ', ''),
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 }
