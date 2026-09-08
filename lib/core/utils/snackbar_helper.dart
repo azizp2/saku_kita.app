@@ -5,12 +5,12 @@ import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 
 class SnackbarHelper {
   static void showSuccess({
-    required String title,
+    String title = 'Sukses',
     required String message,
     Duration duration = const Duration(seconds: 3),
   }) {
     Get.snackbar(
-      title,
+      title!,
       message,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.green.shade700,
@@ -36,7 +36,7 @@ class SnackbarHelper {
   }
 
   static void showError({
-    required String title,
+    String title = 'Gagal',
     required String message,
     Duration duration = const Duration(seconds: 4),
   }) {
@@ -68,12 +68,12 @@ class SnackbarHelper {
 
   // Versi info/warning
   static void showInfo({
-    required String title,
+    String title = 'Info',
     required String message,
     Duration duration = const Duration(seconds: 3),
   }) {
     Get.snackbar(
-      title,
+      title!,
       message,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.blue.shade700,

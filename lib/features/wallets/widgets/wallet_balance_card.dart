@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../app/theme/app_colors.dart';
-
 class WalletBalanceCard extends StatelessWidget {
+  final String title;
   final String balance;
   final VoidCallback? onTap;
 
-  const WalletBalanceCard({super.key, required this.balance, this.onTap});
+  const WalletBalanceCard({
+    super.key,
+    required this.title,
+    required this.balance,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +30,13 @@ class WalletBalanceCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Wallet Utama',
+                    title,
                     style: TextStyle(
                       fontSize: 11,
                       color: Colors.white,
@@ -43,7 +47,7 @@ class WalletBalanceCard extends StatelessWidget {
                   SizedBox(height: 7),
 
                   Text(
-                    'Rp 8.250.000',
+                    balance,
                     style: TextStyle(
                       fontSize: 17,
                       color: Colors.white,

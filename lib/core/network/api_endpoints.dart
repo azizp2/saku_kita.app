@@ -5,4 +5,5 @@ class ApiEndpoints {
   // category
 
   static const String category = '/api/category';
+  static const String wallet = '/api/wallet';
 }

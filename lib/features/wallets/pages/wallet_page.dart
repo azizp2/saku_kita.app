@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:saku_kita_app/core/widgets/app_bottom_navigation.dart';
+import 'package:saku_kita_app/core/utils/currency_formatter.dart';
+import 'package:saku_kita_app/core/widgets/empty_state.dart';
+import 'package:saku_kita_app/features/wallets/widgets/wallet_form_bottom_sheet.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../controllers/wallet_controller.dart';
-import '../widgets/wallet_header.dart';
 import '../widgets/wallet_balance_card.dart';
 import '../widgets/wallet_item.dart';
-import '../widgets/financial_goal_item.dart';
 
 class WalletPage extends GetView<WalletController> {
   const WalletPage({super.key});
@@ -16,144 +16,96 @@ class WalletPage extends GetView<WalletController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.primary,
+        surfaceTintColor: AppColors.surface,
+        iconTheme: IconThemeData(color: AppColors.surface),
         title: Text(
           'Wallet',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w800,
-            color: AppColors.text,
+            color: AppColors.surface,
           ),
         ),
-        actions: [],
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WalletBalanceCard(
-                balance: controller.walletBalance.value,
-                onTap: () {
-                  controller.openWallet('Wallet Utama');
-                },
-              ),
-
-              const SizedBox(height: 12),
-
-              WalletItem(
-                title: 'Tabungan Bersama',
-                amount: controller.sharedSaving.value,
-                icon: Icons.savings_rounded,
-                iconColor: const Color(0xFFFF9B52),
-                iconBackground: const Color(0xFFFFF3E9),
-                onTap: () {
-                  controller.openWallet('Tabungan Bersama');
-                },
-              ),
-
-              const SizedBox(height: 12),
-
-              WalletItem(
-                title: 'Dana Darurat',
-                amount: controller.emergencyFund.value,
-                icon: Icons.health_and_safety_outlined,
-                iconColor: const Color(0xFF43A985),
-                iconBackground: const Color(0xFFEAF8F3),
-                onTap: () {
-                  controller.openWallet('Dana Darurat');
-                },
-              ),
-
-              const SizedBox(height: 24),
-
-              Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tujuan Keuangan',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.text,
-                      ),
-                    ),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await controller.fetchWallets();
+          },
+          color: AppColors.primary,
+          backgroundColor: AppColors.surface,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Obx(() {
+              if (controller.isLoading.value && controller.wallets.isEmpty) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 16),
+                      Text('Memuat data wallet...'),
+                    ],
                   ),
+                );
+              }
 
-                  GestureDetector(
-                    onTap: () {
-                      // TODO: lihat semua tujuan
-                    },
-                    child: const Text(
-                      'Lihat semua',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              final mainWallet = controller.mainWallet;
+              final otherWallets = controller.otherWallets;
 
-              const SizedBox(height: 14),
+              if (controller.wallets.isEmpty) {
+                return const Center(child: EmptyState());
+              }
 
-              Obx(
-                () => Column(
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...controller.financialGoals.map((goal) {
-                      final current = goal['current'] as double;
+                    if (mainWallet != null)
+                      WalletBalanceCard(
+                        title: mainWallet.name,
+                        balance: CurrencyFormatter.format(mainWallet.balance),
+                        onTap: () {
+                          controller.openWallet(mainWallet.id);
+                        },
+                      ),
 
-                      final target = goal['target'] as double;
+                    if (mainWallet != null && otherWallets.isNotEmpty)
+                      const SizedBox(height: 12),
 
+                    ...otherWallets.map((wallet) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
-                        child: FinancialGoalItem(
-                          title: goal['title'],
-                          icon: goal['icon'],
-                          current: controller.formatCurrency(current),
-                          target: controller.formatCurrency(target),
-                          percentage: controller.getPercentage(current, target),
-                        ),
+                        child: WalletItem(wallet: wallet),
                       );
                     }),
 
-                    const SizedBox(height: 2),
-
-                    GestureDetector(
-                      onTap: controller.addFinancialGoal,
-                      child: Container(
-                        width: double.infinity,
-                        height: 38,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add, size: 16, color: AppColors.primary),
-                            SizedBox(width: 5),
-                            Text(
-                              'Buat Tujuan Baru',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    const SizedBox(height: 12),
                   ],
                 ),
-              ),
-
-              const SizedBox(height: 90),
-            ],
+              );
+            }),
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Get.bottomSheet(
+            const WalletFormBottomSheet(),
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            enableDrag: true,
+            persistent: true,
+          );
+        },
+        backgroundColor: AppColors.primary,
+        icon: const Icon(Icons.add_rounded, color: Colors.white),
+        label: const Text(
+          "Tambah Wallet",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
         ),
       ),
     );
