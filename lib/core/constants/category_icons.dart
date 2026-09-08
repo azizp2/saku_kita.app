@@ -22,6 +22,7 @@ class CategoryIcons {
     'investment': Icons.trending_up,
     'business': Icons.business_center,
     'freelance': Icons.laptop_mac,
+    'wallet': Icons.wallet,
     'other': Icons.category,
   };
 

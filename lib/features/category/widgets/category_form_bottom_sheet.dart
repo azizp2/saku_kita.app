@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:saku_kita_app/app/theme/app_colors.dart';
 import 'package:saku_kita_app/core/constants/category_icons.dart';
 import 'package:saku_kita_app/core/utils/color_utils.dart';
 import 'package:saku_kita_app/core/widgets/app_button.dart';
@@ -24,7 +22,6 @@ class _CategoryFormBottomSheetState extends State<CategoryFormBottomSheet> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     c = Get.find<CategoryController>();
